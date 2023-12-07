@@ -1,0 +1,75 @@
+### Java and Maven ###
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.iml
+
+### Spring Boot ###
+/build/
+
+### JavaScript and React ###
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+
+### IDE Specific ###
+# IntelliJ
+.idea/
+*.iws
+*.ipr
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+*.launch
+
+# NetBeans
+nbproject/
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Xcode
+*.pbxproj
+*.xcworkspace/
+*.xcuserstate
+
+### Operating System Specific ###
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Linux
+*~
+
+### Logs and Temporary Files ###
+*.log*
+*.tmp
+*.temp

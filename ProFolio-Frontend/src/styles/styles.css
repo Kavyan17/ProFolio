@@ -1,0 +1,130 @@
+html{
+    font-family: 'Poppins', sans-serif;
+}
+
+p{
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 29px;
+}
+
+form {
+    flex: 1 0 auto;
+    text-align: center;
+}
+
+form input {
+    display: block;
+    width: 80%;
+    padding: 12px;
+    border-radius: 30px;
+    margin: 0 auto 10px auto;
+    border: none;
+    background-color: #d8d6d1;
+}
+
+form>input:focus {
+    outline: 2px solid #71b557;
+}
+
+form>input::placeholder {
+    font-size: 15px;
+    font-weight: 500;
+    color: #787374;
+}
+
+form p {
+    font-size: 13px;
+    color: #4f4a4e;
+}
+
+form button {
+    width: 85%;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 30px;
+    margin: 20px auto;
+    cursor: pointer;
+    color: #fff;
+    background-color: #71b557;
+}
+
+form a {
+    color: #333333;
+    cursor: pointer;
+}
+
+form a:hover {
+    text-decoration: underline;
+}
+
+.gradient-main {
+    margin: 0;
+    height: 100vh;
+    color: #333333;
+    background: linear-gradient(300deg, #4657c8, #ba58bb);
+    background-size: 180% 180%;
+    animation: background-gradient-animation 5s ease infinite;
+}
+
+@keyframes background-gradient-animation {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.authentication-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    min-height: 75%;
+    max-width: 920px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.illustration {
+    max-width: 50%;
+    margin-right: 30px;
+    flex: 0 1 auto;
+}
+
+@media screen and (max-width:650px) {
+    .illustration {
+        flex: 0 1 0px;
+    }
+}
+.big-lottie-animation{
+    width: 50vw;
+    margin: auto;
+}
+.center-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.button{
+    cursor: pointer;
+    padding: 16px;
+    text-align: center;
+    border-radius: 30px;
+    border: none;
+    color: #fff;
+    background-color: #71b557;
+}
+
+.no-scroll-bar{
+    overflow-y: hidden;
+}
