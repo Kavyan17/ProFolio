@@ -306,7 +306,9 @@ export default function UserDetails() {
   //   setPhoneError('');
   //   return true;
   // };
+  
 
+//Validate Phone
   const validatePhone = (phone) => {
     const phoneRegex = /^\+?[0-9\s\-\(\)]*$/;
     const atLeastOneDigit = /[0-9]/;
