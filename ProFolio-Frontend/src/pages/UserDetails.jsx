@@ -50,6 +50,10 @@ export default function UserDetails() {
   const [Name, setName] = useState('');
   const [nameError, setNameError] = useState('');
   const [phoneError, setPhoneError] = useState('');
+  const [educationErrors, setEducationErrors] = useState([]);
+  const [workExperienceErrors, setWorkExperienceErrors] = useState([]);
+  const [projectErrors, setProjectErrors] = useState([]);
+  const [certificationErrors, setCertificationErrors] = useState([]);
   const [title, setTitle] = useState('');
   const [phone, setPhone] = useState('');
   const [homeLocation, setHomeLocation] = useState('');
@@ -89,11 +93,31 @@ export default function UserDetails() {
     endDate: ''
   }]);
 
+  // const handleEducationChange = (event, index) => {
+  //   const { name, value } = event.target;
+  //   const updatedEducation = [...education];
+  //   updatedEducation[index][name] = value;
+  //   setEducation(updatedEducation);
+  // };
+
+  //New code
   const handleEducationChange = (event, index) => {
     const { name, value } = event.target;
     const updatedEducation = [...education];
-    updatedEducation[index][name] = value;
+    const updatedErrors = [...educationErrors];
+    const currentEntry = updatedEducation[index];
+    currentEntry[name] = value;
+    updatedEducation[index] = currentEntry;
+
+    // Assume we have a separate error state for each education entry
+    if (name === 'toDate' && !validateToDate(currentEntry.fromDate, value)) {
+      updatedErrors[index] = 'To date cannot be before From date.';
+    } else {
+      updatedErrors[index] = ''; // Clear error message when valid
+    }
+
     setEducation(updatedEducation);
+    setEducationErrors(updatedErrors);
   };
 
   const handleAddEducation = () => {
@@ -119,6 +143,40 @@ export default function UserDetails() {
     setCertifications(updatedCertification);
   }
 
+  // const handleEducationChange = (event, index) => {
+  //   const { name, value } = event.target;
+  //   const updatedEducation = [...education];
+  //   const updatedErrors = [...educationErrors];
+  //   const currentEntry = updatedEducation[index];
+  //   currentEntry[name] = value;
+  //   updatedEducation[index] = currentEntry;
+
+  //   // Assume we have a separate error state for each education entry
+  //   if (name === 'toDate' && !validateToDate(currentEntry.fromDate, value)) {
+  //     updatedErrors[index] = 'To date cannot be before From date.';
+  //   } else {
+  //     updatedErrors[index] = ''; // Clear error message when valid
+  //   }
+
+  //   setEducation(updatedEducation);
+  //   setEducationErrors(updatedErrors);
+  // };
+
+  //New Code
+  // const validateCertifications = () => {
+  //   const newCertificationErrors = certifications.map(cert => {
+  //     if (new Date(cert.validUntil) < new Date(cert.issuedOn)) {
+  //       return 'Expiration date cannot be before issue date.';
+  //     }
+  //     return ''; // No error
+  //   });
+
+  //   setCertificationErrors(newCertificationErrors);
+  //   // Check if any of the certifications have an error message
+  //   return !newCertificationErrors.some(error => error !== '');
+  // };
+
+
   function handleAddCertification() {
     setCertifications([...certifications, { name: '', provider: '', issuedOn: '', validUntil: '', credentialId: '', url: '' }])
   }
@@ -135,12 +193,42 @@ export default function UserDetails() {
 
   function handleWorkExperienceChange(event, index) {
     const { name, value } = event.target;
+    const updatedExperience = [...workExperience];
+    const updatedErrors = [...workExperienceErrors];
+    updatedExperience[index][name] = value;
+
+    // Validate dates as an example
+    if (name === 'toDate' && new Date(value) < new Date(updatedExperience[index]['fromDate'])) {
+      updatedErrors[index] = 'To date cannot be before from date.';
+    } else {
+      updatedErrors[index] = '';
+    }
     setWorkExperience(prevExperience => {
       const updatedExperience = [...prevExperience];
       updatedExperience[index] = { ...updatedExperience[index], [name]: value };
       return updatedExperience;
     });
   }
+
+  //New code
+
+  // const handleWorkExperienceChange = (event, index) => {
+  //   const { name, value } = event.target;
+  //   const updatedExperience = [...workExperience];
+  //   const updatedErrors = [...workExperienceErrors];
+  //   updatedExperience[index][name] = value;
+
+  //   // Validate dates as an example
+  //   if (name === 'toDate' && new Date(value) < new Date(updatedExperience[index]['fromDate'])) {
+  //     updatedErrors[index] = 'To date cannot be before from date.';
+  //   } else {
+  //     updatedErrors[index] = '';
+  //   }
+
+  //   setWorkExperience(updatedExperience);
+  //   setWorkExperienceErrors(updatedErrors);
+  // };
+
 
   function handleAddWorkExperience() {
     setWorkExperience([...workExperience, {
@@ -153,12 +241,31 @@ export default function UserDetails() {
     }]);
   }
 
+  // const handleProjectChange = (event, index) => {
+  //   const { name, value } = event.target;
+  //   const updatedProjects = [...projects];
+  //   updatedProjects[index][name] = value;
+  //   setProjects(updatedProjects);
+  // };
+
+  //New code
   const handleProjectChange = (event, index) => {
     const { name, value } = event.target;
     const updatedProjects = [...projects];
+    const updatedErrors = [...projectErrors];
     updatedProjects[index][name] = value;
+
+    // Validate dates as an example
+    if (name === 'endDate' && new Date(value) < new Date(updatedProjects[index]['startDate'])) {
+      updatedErrors[index] = { ...updatedErrors[index], endDate: 'End date cannot be before start date.' };
+    } else {
+      updatedErrors[index] = { ...updatedErrors[index], endDate: '' };
+    }
+
     setProjects(updatedProjects);
+    setProjectErrors(updatedErrors);
   };
+
 
   const handleAddProject = () => {
     setProjects([...projects, { name: '', description: '', url: '', startDate: '', endDate: '' }]);
@@ -199,11 +306,11 @@ export default function UserDetails() {
   //   setPhoneError('');
   //   return true;
   // };
-  
+
   const validatePhone = (phone) => {
     const phoneRegex = /^\+?[0-9\s\-\(\)]*$/;
     const atLeastOneDigit = /[0-9]/;
-  
+
     if (!phoneRegex.test(phone) || !atLeastOneDigit.test(phone)) {
       setPhoneError("Invalid phone number");
       return false;
@@ -211,7 +318,14 @@ export default function UserDetails() {
     setPhoneError('');
     return true;
   };
-  
+
+  const validateToDate = (fromDate, toDate) => {
+    if (new Date(toDate) < new Date(fromDate)) {
+      return false; // The to date is before the from date
+    }
+    return true;
+  };
+
 
   const handleNameChange = (event) => {
     const newName = event.target.value;
@@ -225,6 +339,50 @@ export default function UserDetails() {
     validatePhone(newPhone);
   };
 
+  const validateAll = () => {
+    let isValid = true;
+
+    // Validate name and phone first
+    if (!validateName(Name) || !validatePhone(phone)) {
+      isValid = false;
+    }
+
+    // Validate each education
+    for (let edu of education) {
+      if (new Date(edu.toDate) < new Date(edu.fromDate)) {
+        isValid = false;
+        // Set the education error for specific index here if needed
+      }
+    }
+
+    // Validate each work experience
+    for (let exp of workExperience) {
+      if (new Date(exp.toDate) < new Date(exp.fromDate)) {
+        isValid = false;
+        // Set the work experience error for specific index here if needed
+      }
+    }
+
+    // Validate each project
+    for (let project of projects) {
+      if (new Date(project.endDate) < new Date(project.startDate)) {
+        isValid = false;
+        // Set the project error for specific index here if needed
+      }
+    }
+
+    // Validate each certification
+    for (let certification of certifications) {
+      if (new Date(certification.validUntil) < new Date(certification.issuedOn)) {
+        isValid = false;
+        // Set the certification error for specific index here if needed
+      }
+    }
+
+    return isValid;
+  };
+
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -234,6 +392,13 @@ export default function UserDetails() {
     if (!isNameValid || !isPhoneValid) {
       // Prevent form submission if validation fails
       return;
+    }
+
+
+    // Perform all validations
+    if (!validateAll()) {
+      alert('Please correct the errors before submitting.');
+      return; // Stop the form from submitting
     }
 
     if (profilePhoto != null) {
@@ -267,6 +432,7 @@ export default function UserDetails() {
       socialMedia,
       projects
     });
+
     console.log(user.authToken);
     console.log((education == [{
       institutionName: '',
@@ -425,17 +591,28 @@ export default function UserDetails() {
                 <input
                   type="date"
                   name="fromDate"
+                  placeholder="fromDate"
                   value={edu.fromDate}
                   onChange={(event) => handleEducationChange(event, index)}
                 />
 
                 <label htmlFor={`toDate-${index}`}>To Date</label>
-                <input
+                {/* <input
                   type="date"
                   name="toDate"
                   value={edu.toDate}
                   onChange={(event) => handleEducationChange(event, index)}
+                /> */}
+                <input
+                  type="date"
+                  name="toDate"
+                  placeholder="toDate"
+                  value={edu.toDate}
+                  onChange={(event) => handleEducationChange(event, index)}
                 />
+                {educationErrors[index] && (
+                  <div style={{ color: 'red' }}>{educationErrors[index]}</div>
+                )}
                 <label htmlFor='desciption'>Description</label>
                 <textarea
                   id='description'
@@ -494,6 +671,14 @@ export default function UserDetails() {
                   onChange={(event) => handleWorkExperienceChange(event, index)}
                 />
                 <label htmlFor="toDate">To date</label>
+                {/* <input
+                  type="date"
+                  placeholder='To date'
+                  id='toDate'
+                  name="toDate"
+                  value={exp.toDate}
+                  onChange={(event) => handleWorkExperienceChange(event, index)}
+                /> */}
                 <input
                   type="date"
                   placeholder='To date'
@@ -502,6 +687,9 @@ export default function UserDetails() {
                   value={exp.toDate}
                   onChange={(event) => handleWorkExperienceChange(event, index)}
                 />
+                {projectErrors[index]?.endDate && (
+                  <div style={{ color: 'red' }}>{workExperienceErrors[index]}</div>
+                )}
                 <label htmlFor="description">Description</label>
                 <textarea
                   id='description'
@@ -607,7 +795,7 @@ export default function UserDetails() {
                   name="validUntil"
                   value={item.validUntil}
                   onChange={(event) => handleCertificationsChange(event, index)}
-                />
+                /> 
                 <label htmlFor='credentialId'>Credential ID</label>
                 <input
                   type="text"
@@ -670,18 +858,28 @@ export default function UserDetails() {
                 <label htmlFor={`project-startDate-${index}`}>Start Date</label>
                 <input
                   type="date"
+                  placeholder="startDate"
                   name="startDate"
                   value={project.startDate}
                   onChange={(event) => handleProjectChange(event, index)}
                 />
-
                 <label htmlFor={`project-endDate-${index}`}>End Date</label>
-                <input
+                {/* <input
                   type="date"
                   name="endDate"
                   value={project.endDate}
                   onChange={(event) => handleProjectChange(event, index)}
+                /> */}
+                <input
+                  type="date"
+                  placeholder="endDate"
+                  name="endDate"
+                  value={project.endDate}
+                  onChange={(event) => handleProjectChange(event, index)}
                 />
+                {projectErrors[index]?.endDate && (
+                  <div style={{ color: 'red' }}>{projectErrors[index].endDate}</div>
+                )}
                 <hr />
               </div>
             ))}
