@@ -48,6 +48,8 @@ export default function UserDetails() {
 
   const [user, setUser] = useOutletContext();
   const [Name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [title, setTitle] = useState('');
   const [phone, setPhone] = useState('');
   const [homeLocation, setHomeLocation] = useState('');
@@ -177,8 +179,62 @@ export default function UserDetails() {
     // }
   };
 
+  //New code lines
+  const validateName = (name) => {
+    if (!name || name.length < 3) {
+      setNameError("Name must be at least 3 characters long");
+      return false;
+    }
+    setNameError('');
+    return true;
+  };
+
+  // Validation function for the phone field
+  // const validatePhone = (phone) => {
+  //   const phoneRegex = /^[0-9]{15}$/; 
+  //   if (!phoneRegex.test(phone)) {
+  //     setPhoneError("Invalid phone number");
+  //     return false;
+  //   }
+  //   setPhoneError('');
+  //   return true;
+  // };
+  
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\+?[0-9\s\-\(\)]*$/;
+    const atLeastOneDigit = /[0-9]/;
+  
+    if (!phoneRegex.test(phone) || !atLeastOneDigit.test(phone)) {
+      setPhoneError("Invalid phone number");
+      return false;
+    }
+    setPhoneError('');
+    return true;
+  };
+  
+
+  const handleNameChange = (event) => {
+    const newName = event.target.value;
+    setName(newName);
+    validateName(newName);
+  };
+
+  const handlePhoneChange = (event) => {
+    const newPhone = event.target.value;
+    setPhone(newPhone);
+    validatePhone(newPhone);
+  };
+
   async function handleSubmit(event) {
     event.preventDefault();
+
+    const isNameValid = validateName(Name);
+    const isPhoneValid = validatePhone(phone);
+
+    if (!isNameValid || !isPhoneValid) {
+      // Prevent form submission if validation fails
+      return;
+    }
 
     if (profilePhoto != null) {
       let formData = new FormData();
@@ -260,15 +316,22 @@ export default function UserDetails() {
         <h1 className="gradient-heading">Update Your Personal Details</h1>
         <form onSubmit={handleSubmit}>
           <fieldset>
-          <legend><span className="number">1</span> Your basic info</legend>
+            <legend><span className="number">1</span> Your basic info</legend>
             <label htmlFor="name">Name</label>
-            <input
+            {/* <input
               type="text"
               placeholder="Name"
               value={Name}
               onChange={(event) => setName(event.target.value)}
+            /> */}
+            <input
+              type="text"
+              placeholder="Name"
+              value={Name}
+              onChange={handleNameChange}
+              style={{ borderColor: nameError ? 'red' : 'initial' }}
             />
-
+            {nameError && <div style={{ color: 'red' }}>{nameError}</div>}
             <label htmlFor="title">Title</label>
             <input
               type="text"
@@ -278,14 +341,22 @@ export default function UserDetails() {
             />
 
             <label htmlFor="phone">Phone</label>
-            <input
+            {/* <input
               id="phone"
               type="tel"
               placeholder="Phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+            /> */}
+            <input
+              id="phone"
+              type="tel"
+              placeholder="Phone"
+              value={phone}
+              onChange={handlePhoneChange}
+              style={{ borderColor: phoneError ? 'red' : 'initial' }}
             />
-
+            {phoneError && <div style={{ color: 'red' }}>{phoneError}</div>}
             <label htmlFor="home-address">Home Address</label>
             <input
               id="home-address"
@@ -314,7 +385,7 @@ export default function UserDetails() {
           </fieldset>
 
           <fieldset>
-          <legend><span className="number">2</span>Education</legend>
+            <legend><span className="number">2</span>Education</legend>
             {education.map((edu, index) => (
               <div key={index}>
                 <label htmlFor='institutionName'>Institute Name</label>
@@ -385,7 +456,7 @@ export default function UserDetails() {
 
           {/* Experience Section */}
           <fieldset>
-          <legend><span className="number">3</span> Experience</legend>
+            <legend><span className="number">3</span> Experience</legend>
 
             {workExperience.map((exp, index) => (
               <div key={index}>
@@ -449,7 +520,7 @@ export default function UserDetails() {
           <br></br>
           {/* Skills Section */}
           <fieldset>
-          <legend><span className="number">4</span> Skills</legend>
+            <legend><span className="number">4</span> Skills</legend>
             {userSkills.map((skill, index) => (
               <div key={index}>
                 <label htmlFor={`userSkill-${index}`}>Skill</label>
@@ -471,7 +542,7 @@ export default function UserDetails() {
 
           {/* Social Media Section */}
           <fieldset>
-          <legend><span className="number">5</span> Social Media</legend>
+            <legend><span className="number">5</span> Social Media</legend>
             {socialMedia.map((platform, index) => (
               <div key={index}>
                 <label htmlFor={`socialMedia-name-${index}`}>Platform Name</label>
@@ -502,7 +573,7 @@ export default function UserDetails() {
 
           {/* Certifications Section */}
           <fieldset>
-          <legend><span className="number">6</span> Certifications</legend>
+            <legend><span className="number">6</span> Certifications</legend>
             {certifications.map((item, index) => (
               <div key={index}>
                 <label htmlFor="name">Certification or License Name</label>
@@ -567,7 +638,7 @@ export default function UserDetails() {
 
           {/* Projects Section */}
           <fieldset>
-          <legend><span className="number">7</span> Projects</legend>
+            <legend><span className="number">7</span> Projects</legend>
             {projects.map((project, index) => (
               <div key={index}>
                 <label htmlFor={`project-name-${index}`}>Project Name</label>

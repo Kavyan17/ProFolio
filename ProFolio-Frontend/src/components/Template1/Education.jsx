@@ -16,14 +16,14 @@ export default function Education({ educationList }) {
                                 <div className="details">
                                     <h2>{entry.institutionName}</h2>
                                     <p>
-                                        {entry.description}
+                                     {entry.degreeName}
                                     </p>
                                     <div className="inline">
                                         <h3><label>From: </label> {entry.fromDate} <label>To: </label> {entry.toDate}&emsp;|&emsp;</h3>
                                         <h3><label>CGPA: </label> {entry.grade}</h3>
 
                                     </div>
-                                    <h4>{entry.degreeName}</h4>
+                                    <h4>{entry.description}</h4>
                                 </div>
 
                             </div>
