@@ -18,7 +18,7 @@
 - 🧩 **Drag & Drop Customization** *(coming soon)*  
   Easily structure and design your pages with intuitive drag-and-drop components.
 
-- 🔒 **Privacy Control** *(coming soon)* 
+- 🔒 **Privacy Control** *(coming soon)*
   Control what the world sees with flexible public/private toggles.
 
 - 📊 **Analytics Integration** *(planned)*  
