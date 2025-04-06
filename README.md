@@ -47,7 +47,7 @@ Created with passion to empower individuals to showcase their talent without tec
 ---
 
 ## 🙌 Support
-If you find this project useful, consider giving it a ⭐ on GitHub. Every star encourages us to keep building!
+If you find this project useful, consider giving it a ⭐ on GitHub. Every star encourages me to keep building!
 
 ---
 
